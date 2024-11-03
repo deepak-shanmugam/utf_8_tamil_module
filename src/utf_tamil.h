@@ -1,3 +1,12 @@
+/*
+ * utf_tamil.h 
+ *
+ *  Created on: 2024-11-03
+ *      Author: deepaks
+ *
+ * Copyright (C) 2024 Deepak Shanmugam 
+ */
+
 #ifndef UTF_TAMIL_H
 #define UTF_TAMIL_H 
 

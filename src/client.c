@@ -1,3 +1,13 @@
+/*
+ * client.c: 
+ * a sample client program to test the utf_tamil.h modules 
+ *
+ *  Created on: 2024-11-03
+ *      Author: deepaks
+ *
+ * Copyright (C) 2024 Deepak Shanmugam 
+ */
+
 #include <stdio.h>
 #include "utf_tamil.h"
 

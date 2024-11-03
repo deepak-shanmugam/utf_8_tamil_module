@@ -1,3 +1,12 @@
+/*
+ * utf_tamil.c 
+ *
+ *  Created on: 2024-11-03
+ *      Author: deepaks
+ *
+ * Copyright (C) 2024 Deepak Shanmugam 
+ */
+
 #include <stdio.h>
 #include "utf_tamil.h"
 
@@ -6,6 +15,20 @@
 /*
  * A Key-Value map:
  * To indicate the priority of the Tamil code points for string comparison 
+ * based on the values of 2nd and 3rd byte of a code point 
+ * (Note: refer utf-8-analysis.txt document for more details) 
+ * 
+ * Rank:
+ * 1        : pulli 
+ * 2 to 13  : uyir 
+ * 14       : aaitham
+ * 15 to 28 : First 14 agara uyirmei
+ * 29 to 32 : last 4 agara uyirmei
+ * 33       : "ja" non-tamil letter
+ * 34 to 37 : other 4 non-tamil letters
+ * 38 to 48 : inaippu letters which makes other uyir mei 
+ * 49 to 58 : tamil numbers 
+ * 59 to 72 : remaining 
  */
 static const int utf_ta_map[TOTAL_TA_CODEPOINTS] = {
     0, 0, 72, 14, 0, 2, 3, 4, 5, 6, 7, 0, 0, 0, 8, 9, 
@@ -121,7 +144,7 @@ int utf_8_ta_compare(const char *first, const char *second)
 
         /*
          * Logic to get the key of each Tamil code points 
-         * to get its value for comparison using utf_ta_map array
+         * used to get its map-value for comparison using utf_ta_map array 
          */
         f_key = ((82 + first[f_index + 1]) * 64) + (128 + first[f_index + 2]);
         s_key = ((82 + second[s_index + 1]) * 64) + (128 + second[s_index + 2]);
