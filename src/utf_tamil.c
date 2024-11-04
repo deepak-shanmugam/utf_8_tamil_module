@@ -41,6 +41,9 @@ static const int utf_ta_map[TOTAL_TA_CODEPOINTS] = {
     59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 0, 0, 0, 0, 0
 };
 
+static int utf_8_cp_rank(const char *str, int utf_8_type, LangCode code);
+
+
 /*
  * Function to get the type of the First UTF-8 code point in a string pointer 
  */
@@ -51,19 +54,20 @@ int utf_8_type(const char *str, LangCode *code)
 
     if (code != NULL) *code = LANG_UNKNOWN;
     
-    if (str[0] > 0) {
-        if (code != NULL) *code = LANG_ENGLISH;
+    if ((str[0] & 0x80) == 0x00) {
+        if (code != NULL && (str[0] >= 'a' && str[0] <= 'z')
+        && (str[0] >= 'A' && str[0] <= 'Z')) {
+            *code = LANG_ENGLISH;
+        } 
         return 1;
     }
     
-    if ((str[0] >= -64 && str[0] <= -33)
-    && (str[1] >= -128 && str[1] <= -65)) {
+    if (((str[0] & 0xE0) == 0xC0) && ((str[1] & 0xC0) == 0x80)) {
         return 2;
     }
     
-    if ((str[0] >= -32 && str[0] <= -17) 
-    && (str[1] >= -128 && str[1] <= -65) 
-    && (str[2] >= -128 && str[2] <= -65)) {
+    if (((str[0] & 0xF0) == 0xE0) && ((str[1] & 0xC0) == 0x80) 
+    && ((str[2] & 0xC0) == 0x80)) {
         //puts("debug: 3 byte utf-8");
         if (code != NULL) {
             //puts("debug: code is NOT NULL");
@@ -75,10 +79,8 @@ int utf_8_type(const char *str, LangCode *code)
         return 3;
     }
     
-    if ((str[0] >= -16 && str[0] <= -12) 
-    && (str[1] >= -128 && str[1] <= -65) 
-    && (str[2] >= -128 && str[2] <= -65) 
-    && (str[3] >= -128 && str[3] <= -65)) {
+    if (((str[0] & 0xF8) == 0xF0) && ((str[1] & 0xC0) == 0x80) 
+    && ((str[2] & 0xC0) == 0x80) && ((str[3] & 0xC0) == 0x80)) {
         return 4;
     }
     
@@ -136,18 +138,28 @@ int utf_8_ta_compare(const char *first, const char *second)
         if (f_jump == 0) f_jump = 1;
         if (s_jump == 0) s_jump = 1;
 
-        if (f_lang != LANG_TAMIL && s_lang != LANG_TAMIL) return 0;
+        if (f_lang != LANG_TAMIL && s_lang != LANG_TAMIL) {
+            f_key = utf_8_cp_rank(&first[f_index], f_jump, f_lang);
+            s_key = utf_8_cp_rank(&second[s_index], s_jump, s_lang);
+
+            if (f_key != s_key) {
+                return f_key - s_key;
+            }
+
+            f_index += f_jump;
+            s_index += s_jump;
+            continue;
+        }
+
         if (f_lang != LANG_TAMIL) return 1;
         if (s_lang != LANG_TAMIL) return -1;
-
-        printf("f_lang: %d, s_lang: %d\n", f_lang, s_lang);
 
         /*
          * Logic to get the key of each Tamil code points 
          * used to get its map-value for comparison using utf_ta_map array 
          */
-        f_key = ((82 + first[f_index + 1]) * 64) + (128 + first[f_index + 2]);
-        s_key = ((82 + second[s_index + 1]) * 64) + (128 + second[s_index + 2]);
+        f_key = ((first[f_index + 1] & 1) * 64) + (128 + first[f_index + 2]);
+        s_key = ((second[s_index + 1] & 1) * 64) + (128 + second[s_index + 2]);
 
         if (utf_ta_map[f_key] != utf_ta_map[s_key]) 
             return (utf_ta_map[f_key] - utf_ta_map[s_key]);
@@ -160,4 +172,36 @@ int utf_8_ta_compare(const char *first, const char *second)
     if (second[s_index] != '\0') return -1;
 
     return 0;
+} 
+
+/*
+ * Function to get the rank of the NON-TAMIL code points in UTF-8
+ * if rank is lower, then the letter has lexicographically lower order
+ * else, otherwise 
+ * 
+ * we form the rank by just multiplying the 'unsigned char' value of 
+ * each byte in a code point 
+ * Note: This is applicable only for 'NON-TAMIL' code points 
+ */
+static int utf_8_cp_rank(const char *str, int utf_8_type, LangCode code) 
+{
+    int rank = 1;
+    int index;
+
+    if (str == NULL) {
+        return -1;
+    }
+
+    if (utf_8_type == 1) {
+        if (code == LANG_ENGLISH && str[0] >= 'a' && str[0] <= 'z') {
+            return (str[0] - 32);
+        }
+        return ((str[0] & 0x80) ? -1 : str[0]);
+    }
+
+    for (index = 0; index < utf_8_type; index++) {
+        rank *= (unsigned char) str[index];
+    }
+
+    return rank;
 } 

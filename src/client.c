@@ -12,10 +12,14 @@
 #include "utf_tamil.h"
 
 int main(int argc, char *argv[]) {
-    char *str1 = "படம்";
-    char *str2 = "பட்டம்";
+    char *str1 = "வணக்கம்";
+    char *str2 = "फायदे";
+    char *str3 = "భారతదేశం";
+    char *str4 = "സ്വതന്ത്ര";
+    char *str5 = "test";
+    char *str6 = "";
 
-    printf("return value of comparison: %d\n", utf_8_ta_compare(str1, str2));
+    printf("return value of comparison: %d\n", utf_8_ta_compare(str1, str6));
     printf("No of code points in str1: %d\n", utf_8_cp_count(str1));
     printf("No of code points in str2: %d\n", utf_8_cp_count(str2));
 

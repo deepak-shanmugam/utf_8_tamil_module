@@ -4,3 +4,10 @@
 
 #binary files
 *.bin
+
+#library files
+*.a
+*.so
+
+#output files
+program
