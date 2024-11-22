@@ -11,7 +11,16 @@
 #include <stdio.h>
 #include "utf_tamil.h"
 
+void test1();
+void test2();
+
 int main(int argc, char *argv[]) {
+    test2();
+
+    return 0;
+} 
+
+void test1() {
     char *str1 = "வணக்கம்";
     char *str2 = "फायदे";
     char *str3 = "భారతదేశం";
@@ -22,6 +31,36 @@ int main(int argc, char *argv[]) {
     printf("return value of comparison: %d\n", utf_8_ta_compare(str1, str6));
     printf("No of code points in str1: %d\n", utf_8_cp_count(str1));
     printf("No of code points in str2: %d\n", utf_8_cp_count(str2));
+}
 
-    return 0;
-} 
+void test2() {
+    char *str[9];
+    str[0] = "பண்டம்";
+    str[1] = "படம்";
+    str[2] = "படு";
+    str[3] = "பட்டம்";
+    str[4] = "படி";
+    str[5] = "பட";
+    str[6] = "பட்";
+    str[7] = "க";
+    str[8] = "க்";
+
+    char *temp;
+
+    for (int i=0; i<8; i++) {
+        //printf("%d: ",i);
+        for (int j=i+1; j<9; j++) {
+            //printf("%d, ", j);
+            if (utf_8_ta_compare(str[i],str[j]) > 0) {
+                temp = str[j];
+                str[j] = str[i];
+                str[i] = temp;
+            }
+        }
+        //puts("");
+    }
+
+    for (int i=0; i<7; i++) {
+        puts(str[i]);
+    }
+}
