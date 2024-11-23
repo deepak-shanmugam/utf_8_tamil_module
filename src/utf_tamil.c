@@ -216,3 +216,4 @@ static int utf_8_cp_rank(const char *str, int utf_8_type, UTF8_Lang lang)
 
     return rank;
 } 
+types 
