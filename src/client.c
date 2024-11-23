@@ -29,9 +29,9 @@ void test1() {
     char *str5 = "test";
     char *str6 = "";
 
-    printf("return value of comparison: %d\n", utf_8_ta_compare(str1, str6));
-    printf("No of code points in str1: %d\n", utf_8_cp_count(str1));
-    printf("No of code points in str2: %d\n", utf_8_cp_count(str2));
+    printf("return value of comparison: %d\n", utf8_compare_tamil(str1, str2));
+    printf("No of code points in str1: %d\n", get_utf8_cp_count(str1));
+    printf("No of code points in str2: %d\n", get_utf8_cp_count(str2));
 }
 
 void test2() {
@@ -52,7 +52,7 @@ void test2() {
         //printf("%d: ",i);
         for (int j=i+1; j<9; j++) {
             //printf("%d, ", j);
-            if (utf_8_ta_compare(str[i],str[j]) > 0) {
+            if (utf8_compare_tamil(str[i],str[j]) > 0) {
                 temp = str[j];
                 str[j] = str[i];
                 str[i] = temp;
@@ -75,5 +75,5 @@ void test3() {
     puts("Enter second: ");
     fgets(second, 128, stdin);
 
-    printf("utf_8_ta_compare: %d\n", utf_8_ta_compare(first, second));
+    printf("utf8_compare_tamil: %d\n", utf8_compare_tamil(first, second));
 } 

@@ -14,42 +14,43 @@
  * Enumeration to indicate the Language of the code points 
  */
 typedef enum {
-    LANG_UNKNOWN,
-    LANG_ENGLISH,
-    LANG_TAMIL
+    UTF8_LANG_TAMIL,
+    UTF8_LANG_ENGLISH,
+    UTF8_LANG_UNKNOWN,
+    UTF8_LANG_TOTAL
 } UTF8_Lang;
 
 /*
  * Enumeration to indicate the UTF-8 Type 
  */
 typedef enum {
-    UTF8_TYPE_UNKNOWN   = 0,
-    UTF8_TYPE_1         = 1,
-    UTF8_TYPE_2         = 2,
-    UTF8_TYPE_3         = 3,
-    UTF8_TYPE_4         = 4
+    UTF8_TYPE_UNKNOWN,
+    UTF8_TYPE_1,
+    UTF8_TYPE_2,
+    UTF8_TYPE_3,
+    UTF8_TYPE_4,
+    UTF8_TYPE_TOTAL
 } UTF8_Type;
 
 /*
- * Function to get the type of the first UTF-8 code point in a string pointer
- * 1 indicates 1 byte UTF-8
- * 2 indicates 2 byte UTF-8
- * 3 indicates 3 byte UTF-8
- * 4 indicates 4 byte UTF-8
+ * Function to get the info of initial codepoint in an UTF-8 string pointer
+ * 1 indicates 1 byte UTF-8 (UTF8_TYPE_1)
+ * 2 indicates 2 byte UTF-8 (UTF8_TYPE_2)
+ * 3 indicates 3 byte UTF-8 (UTF8_TYPE_3)
+ * 4 indicates 4 byte UTF-8 (UTF8_TYPE_4)
  * 
- * 0 indicates unknown type
- * -1 indicates error
+ * 0 indicates unknown type (UTF8_TYPE_UNKNOWN)
  *
- * Note: This also sets the Language of the code point 
- * only if code pointer is NOT NULL
+ * Note: This also sets the Language of the initial codepoint 
+ * only if UTF8_Lang pointer is NOT NULL
  */
-int utf_8_type(const char *str, UTF8_Lang *code);
+int get_utf8_info(const char *str, UTF8_Lang *code);
 
 /*
- * Function to count the no of code points in an entire string 
+ * Function to count the no of code points in an entire string (UTF-8)
  * Note: It only count the code point, not the letter 
  */
-int utf_8_cp_count(const char *str);
+int get_utf8_cp_count(const char *str);
 
 /*
  * Function to compare the TAMIL string in UTF-8 
@@ -60,6 +61,6 @@ int utf_8_cp_count(const char *str);
  * -ve : indicates first string comes first 
  * +ve : indicates second string comes first 
  */
-int utf_8_ta_compare(const char *first, const char *second);
+int utf8_compare_tamil(const char *first, const char *second);
 
 #endif 
