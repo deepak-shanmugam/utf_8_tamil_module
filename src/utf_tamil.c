@@ -64,7 +64,7 @@ UTF8_LanguageSet lang_object_map[UTF8_LANG_TOTAL] = {
 };
 
 /*
- * Function to get the type of the First UTF-8 code point in a string pointer 
+ * Function to get the type of the initial codepoint in an UTF-8 string pointer 
  */
 int get_utf8_info(const char *str, UTF8_Lang *lang) 
 {
@@ -153,8 +153,14 @@ int utf8_compare_tamil(const char *first, const char *second)
         if (f_jump == UTF8_TYPE_UNKNOWN) f_jump = 1;
         if (s_jump == UTF8_TYPE_UNKNOWN) s_jump = 1;
 
+        /* if codepoints languages are not equal */
         if (f_lang != s_lang) {
             return f_lang - s_lang;
+        }
+
+        /* to handle unknown language with different utf-8 types */
+        if (f_jump != s_jump) {
+            return f_jump - s_jump;
         }
 
         comparison = lang_object_map[f_lang].fn_compare(&first[f_index], &second[s_index]);
@@ -176,6 +182,7 @@ int utf8_compare_tamil(const char *first, const char *second)
  * Function to compare the initial codepoints in default way!
  * **BEWARE**: When this function is being called, that means 
  * 1. UTF8_Type of initial codepoints of first and second string should be equal 
+ * 2. NULL string string already handled 
  */ 
 static int compare_default_cp(const char *first, const char *second) 
 {
@@ -205,6 +212,7 @@ static int compare_default_cp(const char *first, const char *second)
  * Function to compare the initial codepoints of the TAMIL strings 
  * **BEWARE**: If this function is being called, that means
  * 1. The Language of initial codepoints of first and second strings should be TAMIL 
+ * 2. NULL string scenario already handled 
  */
 static int compare_tamil_cp(const char *first, const char *second) 
 {
@@ -232,11 +240,13 @@ static int compare_tamil_cp(const char *first, const char *second)
         if (f_rank >= 15 && f_rank <= 37) {
             get_utf8_info(&first[3], &f_lang_next);
             get_utf8_info(&second[3], &s_lang_next);
+
             if (s_lang_next != UTF8_LANG_TAMIL && f_lang_next == UTF8_LANG_TAMIL) {
                 if (first[5] == -115) {
                     return -1;
                 }
             }
+
             if (f_lang_next != UTF8_LANG_TAMIL && s_lang_next == UTF8_LANG_TAMIL) {
                 if (second[5] == -115) {
                     return 1;

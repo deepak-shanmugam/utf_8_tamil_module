@@ -48,17 +48,15 @@ void test2() {
 
     char *temp;
 
+    /* basic sort method to test */
     for (int i=0; i<8; i++) {
-        //printf("%d: ",i);
         for (int j=i+1; j<9; j++) {
-            //printf("%d, ", j);
             if (utf8_compare_tamil(str[i],str[j]) > 0) {
                 temp = str[j];
                 str[j] = str[i];
                 str[i] = temp;
             }
         }
-        //puts("");
     }
 
     for (int i=0; i<9; i++) {
