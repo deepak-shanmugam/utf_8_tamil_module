@@ -170,20 +170,16 @@ int utf_8_ta_compare(const char *first, const char *second)
 
     if (first[f_index] != '\0') { 
         utf_8_type(&first[f_index], &f_lang);
-        if (f_lang == LANG_TAMIL) {
-            if (first[f_index + 2] == -115) {
-                return -1;
-            }
+        if (f_lang == LANG_TAMIL && first[f_index + 2] == -115) {
+            return -1;
         }
         return 1;
     }
 
     if (second[s_index] != '\0') {
         utf_8_type(&second[s_index], &s_lang);
-        if (s_lang == LANG_TAMIL) {
-            if (second[s_index + 2] == -115) {
-                return 1;
-            }
+        if (s_lang == LANG_TAMIL && second[s_index + 2] == -115) {
+            return 1;
         }
         return -1;
     }

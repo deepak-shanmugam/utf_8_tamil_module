@@ -11,3 +11,6 @@
 
 #output files
 program
+
+#folders to ignore
+test/
