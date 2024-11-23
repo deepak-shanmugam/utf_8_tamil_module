@@ -17,7 +17,18 @@ typedef enum {
     LANG_UNKNOWN,
     LANG_ENGLISH,
     LANG_TAMIL
-} LangCode;
+} UTF8_Lang;
+
+/*
+ * Enumeration to indicate the UTF-8 Type 
+ */
+typedef enum {
+    UTF8_TYPE_UNKNOWN   = 0,
+    UTF8_TYPE_1         = 1,
+    UTF8_TYPE_2         = 2,
+    UTF8_TYPE_3         = 3,
+    UTF8_TYPE_4         = 4
+} UTF8_Type;
 
 /*
  * Function to get the type of the first UTF-8 code point in a string pointer
@@ -32,7 +43,7 @@ typedef enum {
  * Note: This also sets the Language of the code point 
  * only if code pointer is NOT NULL
  */
-int utf_8_type(const char *str, LangCode *code);
+int utf_8_type(const char *str, UTF8_Lang *code);
 
 /*
  * Function to count the no of code points in an entire string 
