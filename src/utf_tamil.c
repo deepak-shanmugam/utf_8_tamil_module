@@ -163,6 +163,7 @@ int utf8_compare_tamil(const char *first, const char *second)
             return f_jump - s_jump;
         }
 
+        /* when utf8_lang and utf8_type of first and second strings are same */ 
         comparison = lang_object_map[f_lang].fn_compare(&first[f_index], &second[s_index]);
         if (comparison != 0) {
             return comparison;

@@ -73,5 +73,6 @@ void test3() {
     puts("Enter second: ");
     fgets(second, 128, stdin);
 
-    printf("utf8_compare_tamil: %d\n", utf8_compare_tamil(first, second));
+    printf("utf8_compare_tamil(%s, %s): %d\n"
+        , first, second, utf8_compare_tamil(first, second));
 } 
