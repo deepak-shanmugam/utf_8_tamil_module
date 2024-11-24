@@ -44,6 +44,7 @@ static const int utf8_tamil_key_map[TOTAL_TAMIL_CODEPOINTS] = {
 typedef int (*CompareFunction)(const char *first, const char *second);
 
 static int compare_default_cp(const char *first, const char *second);
+static int compare_english_cp(const char *first, const char *second);
 static int compare_tamil_cp(const char *first, const char *second);
 
 typedef struct {
@@ -59,7 +60,7 @@ typedef struct {
  */
 UTF8_LanguageSet lang_object_map[UTF8_LANG_TOTAL] = {
     {UTF8_LANG_TAMIL    ,UTF8_TYPE_3        ,compare_tamil_cp},
-    {UTF8_LANG_ENGLISH  ,UTF8_TYPE_1        ,compare_default_cp},
+    {UTF8_LANG_ENGLISH  ,UTF8_TYPE_1        ,compare_english_cp},
     {UTF8_LANG_UNKNOWN  ,UTF8_TYPE_UNKNOWN  ,compare_default_cp}
 };
 
@@ -133,11 +134,10 @@ int get_utf8_cp_count(const char *str)
  */ 
 int utf8_compare_tamil(const char *first, const char *second) 
 {
+    UTF8_Lang f_lang, s_lang;
     int f_index, s_index;
     int f_jump, s_jump;
     int comparison;
-
-    UTF8_Lang f_lang, s_lang;
 
     if (first == NULL && second == NULL) return 0;
     if (first == NULL) return -1;
@@ -155,12 +155,12 @@ int utf8_compare_tamil(const char *first, const char *second)
 
         /* if codepoints languages are not equal */
         if (f_lang != s_lang) {
-            return f_lang - s_lang;
+            return (f_lang - s_lang);
         }
 
         /* to handle unknown language with different utf-8 types */
         if (f_jump != s_jump) {
-            return f_jump - s_jump;
+            return (f_jump - s_jump);
         }
 
         /* when utf8_lang and utf8_type of first and second strings are same */ 
@@ -210,11 +210,32 @@ static int compare_default_cp(const char *first, const char *second)
 }
 
 /*
- * Function to compare the initial codepoints of the TAMIL strings 
- * **BEWARE**: If this function is being called, that means
- * 1. The Language of initial codepoints of first and second strings should be TAMIL 
+ * Function to compare the initial codepoints of the ENGLISH (ASCII) strings 
+ * **BEWARE** If this function is being called, that means 
+ * 1. The initial codepoint of both the first and second strings are in ENGLISH (ASCII)  
  * 2. NULL string scenario already handled 
  */
+static int compare_english_cp(const char *first, const char *second) {
+    int f_add = 0;
+    int s_add = 0;
+
+    if (first[0] >= 'A' && first[0] <= 'Z') {
+        f_add = 32;
+    }
+
+    if (second[0] >= 'A' && second[0] <= 'Z') {
+        s_add = 32;
+    }
+
+    return ((first[0] + f_add) - (second[0] + s_add));
+} 
+
+/*
+ * Function to compare the initial codepoints of the TAMIL strings 
+ * **BEWARE**: If this function is being called, that means
+ * 1. The initial codepoint of both the first and second strings are in TAMIL  
+ * 2. NULL string scenario already handled 
+ */ 
 static int compare_tamil_cp(const char *first, const char *second) 
 {
     int f_key, s_key;
