@@ -67,7 +67,7 @@ UTF8_LanguageSet lang_object_map[UTF8_LANG_TOTAL] = {
 /*
  * Function to get the type of the initial codepoint in an UTF-8 string pointer 
  */
-int get_utf8_info(const char *str, UTF8_Lang *lang) 
+UTF8_Type get_utf8_info(const char *str, UTF8_Lang *lang) 
 {
     if (str == NULL) 
         return UTF8_TYPE_UNKNOWN;

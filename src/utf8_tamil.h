@@ -44,7 +44,7 @@ typedef enum {
  * Note: This also sets the Language of the initial codepoint 
  * only if UTF8_Lang pointer is NOT NULL
  */
-int get_utf8_info(const char *str, UTF8_Lang *code);
+UTF8_Type get_utf8_info(const char *str, UTF8_Lang *lang);
 
 /*
  * Function to count the no of code points in an entire string (UTF-8)
