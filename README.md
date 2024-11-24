@@ -4,9 +4,14 @@ C library to primarily handle the tamil unicode letters in utf-8 format.
 # Supported Platform 
 > Linux, Windows, MAC 
 
-# Run or Test 
+# Build 
+To compile using gcc: 
 ```
 gcc -o test client.c utf8_tamil.c 
+```
+To run: 
+```
+./test
 ```
 
 # Supported Functionality 
