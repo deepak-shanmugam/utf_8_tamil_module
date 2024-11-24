@@ -16,7 +16,7 @@ To run:
 
 # Supported Functionality 
 - To get the no of codepoints present in a string: int get_utf8_cp_count(const char *string); 
-- To get the UTF8 information (UTF8_Type and UTF8_Lang) of the first codepoint in a string: int get_utf8_info(const char *string); 
+- To get the UTF8 information (UTF8_Type and UTF8_Lang) of the first codepoint in a string: int get_utf8_info(const char *string, UTF8_Lang *lang); 
 - To compare the UTF-8 string for searching, sorting based on the lexicographic order: int utf8_compare_tamil(const char *first, const char *second); 
 - Note: The above compare function works best for TAMIL and ENGLISH based on Lexicographic order. Also, can detect only these 2 languages.
 
