@@ -1,5 +1,5 @@
 /*
- * utf_tamil.c 
+ * utf8_tamil.c (renamed) 
  *
  *  Created on: 2024-11-03
  *      Author: deepaks
@@ -8,7 +8,7 @@
  */
 
 #include <stdio.h>
-#include "utf_tamil.h"
+#include "utf8_tamil.h"
 
 #define TOTAL_TAMIL_CODEPOINTS 128
 
@@ -59,8 +59,8 @@ typedef struct {
  * Note: This is implemented because of future modification/additions in mind 
  */
 UTF8_LanguageSet lang_object_map[UTF8_LANG_TOTAL] = {
-    {UTF8_LANG_TAMIL    ,UTF8_TYPE_3        ,compare_tamil_cp},
     {UTF8_LANG_ENGLISH  ,UTF8_TYPE_1        ,compare_english_cp},
+    {UTF8_LANG_TAMIL    ,UTF8_TYPE_3        ,compare_tamil_cp},
     {UTF8_LANG_UNKNOWN  ,UTF8_TYPE_UNKNOWN  ,compare_default_cp}
 };
 

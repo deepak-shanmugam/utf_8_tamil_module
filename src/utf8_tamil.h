@@ -1,5 +1,5 @@
 /*
- * utf_tamil.h 
+ * utf8_tamil.h (renamed) 
  *
  *  Created on: 2024-11-03
  *      Author: deepaks
@@ -7,15 +7,15 @@
  * Copyright (C) 2024 Deepak Shanmugam 
  */
 
-#ifndef UTF_TAMIL_H
-#define UTF_TAMIL_H 
+#ifndef UTF8_TAMIL_H
+#define UTF8_TAMIL_H 
 
 /*
  * Enumeration to indicate the Language of the code points 
  */
 typedef enum {
-    UTF8_LANG_TAMIL,
     UTF8_LANG_ENGLISH,
+    UTF8_LANG_TAMIL,
     UTF8_LANG_UNKNOWN,
     UTF8_LANG_TOTAL
 } UTF8_Lang;
